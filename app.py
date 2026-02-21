@@ -36,13 +36,31 @@ if turno_sel != "(Todos)":
 else:
     df_view = df
 
-st.subheader("Calendario")
 
-# Ordenar por fecha
+st.subheader("📅 Agenda de riego")
+
+# Ordenar por fecha real
+df_view["FECHA"] = pd.to_datetime(df_view["FECHA"])
 df_view = df_view.sort_values("FECHA")
 
-# Convertir y formatear fecha
-df_view["FECHA"] = pd.to_datetime(df_view["FECHA"])
-df_view["FECHA"] = df_view["FECHA"].dt.strftime("%d/%m/%y")
+# Formatear fecha
+df_view["FECHA_STR"] = df_view["FECHA"].dt.strftime("%d/%m/%y")
 
-st.dataframe(df_view, use_container_width=True)
+# Vista tipo agenda
+for _, row in df_view.iterrows():
+    st.markdown(
+        f"""
+        <div style="
+            padding:12px;
+            border-radius:10px;
+            margin-bottom:8px;
+            background-color:#f4f6f8;
+            border-left:6px solid #4da6ff;
+        ">
+            <strong>{row['FECHA_STR']}</strong>  
+            🕒 {row['HORA']}  
+            👤 {row['TURNO']}
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
