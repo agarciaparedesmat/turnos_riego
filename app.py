@@ -13,13 +13,18 @@ st.title("💧 Consulta de turnos y horario de riego (2026)")
 # Cargar datos
 @st.cache_data
 def cargar_datos():
-    return pd.read_excel(EXCEL_PATH, engine="openpyxl")
+    df = pd.read_excel(EXCEL_PATH, engine="openpyxl")
+
+    # Normalizar nombres
+    df.columns = df.columns.astype(str).str.strip().str.upper()
+
+    # Seleccionar solo columnas necesarias
+    df = df.loc[:, ["FECHA", "HORA", "TURNO"]]
+
+    return df
 
 
 df = cargar_datos()
-
-# Nos quedamos solo con las 3 columnas correctas
-df = df[["FECHA", "HORA", "TURNO"]].copy()
 
 st.subheader("Filtros")
 
