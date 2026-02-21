@@ -18,6 +18,9 @@ def cargar_datos():
 
 df = cargar_datos()
 
+# Nos quedamos solo con las 3 columnas correctas
+df = df[["FECHA", "HORA", "TURNO"]].copy()
+
 st.subheader("Filtros")
 
 turnos = ["(Todos)"] + sorted(df["TURNO"].unique().tolist())
